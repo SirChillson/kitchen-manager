@@ -135,7 +135,7 @@ async function saveNewRecipe() { if (!newRecipe.value.name) return alert("Name R
   <div v-if="loading" class="loading-screen">Loading...</div>
 
   <div v-else-if="!session" class="app-container auth-container">
-    <h1>🔐 Kitchen Login</h1>
+    <h1>MTSO Kitchen Login</h1>
     <div class="card">
         <p style="text-align:center; margin-bottom: 20px;">Please sign in to access inventory.</p>
         <div style="margin-bottom: 15px;">
@@ -153,7 +153,7 @@ async function saveNewRecipe() { if (!newRecipe.value.name) return alert("Name R
   <div v-else class="app-container">
     
     <div class="header no-print">
-        <h1>👨‍🍳 Kitchen Manager</h1>
+        <h1>MTSO Kitchen Manager</h1>
         <button @click="handleLogout" class="logout-btn">Logout</button>
     </div>
 
@@ -220,7 +220,7 @@ async function saveNewRecipe() { if (!newRecipe.value.name) return alert("Name R
             <div class="card" style="margin-top: 20px;">
                 <div style="display:flex; justify-content: space-between; align-items:flex-start;"><h2 style="margin-top:0;">{{ selectedRecipe.name }}</h2><button @click="addToPlan(selectedRecipe)" class="add-plan-btn">📝 Add to Plan</button></div>
                 <div class="tags" style="margin-bottom: 15px;"><span class="tag">{{ selectedRecipe.meal_type }}</span><span class="tag">{{ selectedRecipe.dish_category }}</span></div>
-                <div class="yield-box">Yield: {{ selectedRecipe.servings || 'Not specified' }}</div>
+                <div class="yield-box">Servings: {{ selectedRecipe.servings || 'Not specified' }}</div>
                 <h4>Instructions</h4><p class="instruction-box">{{ selectedRecipe.instructions || 'No instructions provided.' }}</p>
                 <h4>Ingredients</h4>
                 <ul class="ingredient-list"><li v-for="ing in selectedRecipe.recipe_ingredients" :key="ing.id" class="ing-item"><span v-if="ing.inventory_items"><strong>{{ ing.inventory_items.name }}</strong><span style="float: right;">{{ ing.quantity_needed }} {{ ing.inventory_items.base_unit }}</span></span></li></ul>
@@ -242,7 +242,7 @@ async function saveNewRecipe() { if (!newRecipe.value.name) return alert("Name R
             <h3>Production Plan</h3>
             <p v-if="plannerList.length === 0" style="opacity: 0.7; font-style:italic;">Your plan is empty.</p>
             <div v-for="recipe in filteredPlanRecipes" :key="recipe.id" class="plan-row">
-                <div><strong>{{ recipe.name }}</strong><br><small style="opacity: 0.7;">Yield: {{ recipe.servings }}</small></div>
+                <div><strong>{{ recipe.name }}</strong><br><small style="opacity: 0.7;">Servings: {{ recipe.servings }}</small></div>
                 <div style="display:flex; align-items:center; gap:10px;"><div><span style="font-size:0.8em; opacity: 0.7; margin-right:5px;">Batches:</span><input type="number" v-model="productionPlan[recipe.id]" placeholder="0" style="width:50px; padding:5px;"></div><button @click="removeFromPlan(recipe.id)" class="remove-btn">×</button></div>
             </div>
         </div>
@@ -259,7 +259,7 @@ async function saveNewRecipe() { if (!newRecipe.value.name) return alert("Name R
     <div v-if="printMode === 'recipes'" class="print-container">
         <div class="print-header"><h1>Kitchen Prep Pack</h1><p>{{ new Date().toLocaleDateString() }}</p></div>
         <div v-for="recipe in printRecipePack" :key="recipe.id" class="print-recipe-block">
-            <div style="border-bottom: 2px solid black; padding-bottom: 10px; margin-bottom: 15px;"><h2 style="margin:0; font-size: 24px;">{{ recipe.name }}</h2><div style="font-size: 14px; margin-top: 5px;"><strong>Plan:</strong> {{ recipe.batches }} Batches<span style="margin: 0 10px;">|</span><strong>Base Yield:</strong> {{ recipe.servings }}</div></div>
+            <div style="border-bottom: 2px solid black; padding-bottom: 10px; margin-bottom: 15px;"><h2 style="margin:0; font-size: 24px;">{{ recipe.name }}</h2><div style="font-size: 14px; margin-top: 5px;"><strong>Plan:</strong> {{ recipe.batches }} Batches<span style="margin: 0 10px;">|</span><strong>Base Servings:</strong> {{ recipe.servings }}</div></div>
             <div style="display:flex; gap: 30px;"><div style="flex: 1;"><h3>Ingredients (Scaled x{{ recipe.batches }})</h3><ul style="list-style: none; padding: 0;"><li v-for="ing in recipe.scaledIngredients" :key="ing.name" style="padding: 4px 0; border-bottom: 1px solid #ddd;"><strong>{{ ing.amount }} {{ ing.unit }}</strong> {{ ing.name }} </li></ul></div><div style="flex: 1;"><h3>Instructions</h3><p style="white-space: pre-wrap; line-height: 1.4;">{{ recipe.instructions || 'No instructions provided.' }}</p></div></div><div class="page-break"></div>
         </div>
     </div>
